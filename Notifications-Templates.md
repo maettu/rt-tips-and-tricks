@@ -3,6 +3,8 @@ Notes on Templates Used in Notifications
 
 A notification is an email you get when someone leaves a comment on a ticket or alike.
 
+You are coding on the RT UI, in the forms you find, there.
+
 The templates for this are under Admin > Global > Templates. To learn with template gets used where, look at column "Used by scrips" and compare this to Admin > Scrips
 
 There are two kind of templates, "Perl" and "Simple". The following notes are on Perl templates.
