@@ -75,3 +75,78 @@ Example: a template for "Admin Comment in HTML" for template 13 that sends notif
     }
 
     {$Transaction->Content(Type => "text/html")}
+
+Another approach for the same problem would be to include everything in one code block and emit the mail at its end:
+
+    {
+    my $ticket_id = $Ticket->id;
+    my $ticket_link = RT->Config->Get("WebURL").'Ticket/Display.html?id='.$ticket_id;
+    my $ticket_owner = $Ticket->Owner;
+
+    my $user = RT::User->new();
+    $user->Load($Ticket->Owner);
+    $user_lang = $user->Lang;
+
+    # --------
+
+    my $text_default =
+    qq{<p>This is a comment about <a href="$ticket_link">ticket $ticket_id</a>. It is not sent to the Requestor(s):</p>
+    <p>owner: $ticket_owner</p>
+    <p>user language: $user_lang</p>};
+
+    my $text_de =
+    qq{<p>Dies ist ein Kommentar zu <a href="$ticket_link">Ticket $ticket_id</a>. Er wurde nicht an die Ersteller des Tickets geschickt.</p>
+    <p>Sprache des Besitzers: $user_lang</p>};
+
+    # $text_fr and $text_it, here
+    my $text_fr =
+    qq{on est là
+
+    };
+
+    my $text_it =
+    qq{TODO};
+
+    # ------
+
+
+    my %comment = (
+        de => 'Kommentar',
+        fr => 'Commentaire',
+        it => 'Commento',
+        default => 'Comment'
+    );
+
+    %text = (
+        default => $text_default,
+        de => $text_de,
+        fr => $text_fr,
+        it => $text_it,
+    );
+
+    my $text = $text{default};
+    $text = $text{$user_lang} if (exists $text{$user_lang});
+
+    my $s=($Transaction->Subject||$Ticket->Subject||"");
+    $s =~ s/\[Comment\]\s*//g;
+    $s =~ s/^Re:\s*//i;
+
+    my $subject = "Subject: [". ($comment{$user_lang} // $somment{default}) . "] $s :-)";
+
+    my $header = "$subject
+    RT-Attach-Message: yes
+    Content-Type: text/html";
+
+    my $mail = "$header\n\n$text";
+
+    # "write" the whole mail in one.
+    $mail;
+    }
+
+    {$Transaction->Content(Type => "text/html")}
+
+This has the advantage of one code block / scope, no unwieldy lines.
+
+Still better is an approach that exposes a function exposed from the backend, allowing to pass in only the texts from the UI.
+
+    TODO
