@@ -13,9 +13,61 @@ Then, locate the modules in question. You can do some print-style learning by pr
 LOCAL INSTALL
 -------------
 
+mojo command builder
+
 A local install with SQLite backend is easiest to set up.
+Use the sdbs tool to build rt in ~/opt/rt4
+
+    git clone https://github.com/oetiker/sdbs
+    export PREFIX=~/opt/rt4
+    sdbs/build_rt-4.4.1.sh
+
+At the end of the installation, you should see:
+
+    ...
+    You must now configure RT by editing /home/bloch/gaga/etc/RT_SiteConfig.pm.
+    ...
+
+If you have any specific setting, include them.
+You will certainly need DB access:
+
+    Set( $rtname, 'picture test xyz');
+
+    Set($DatabaseType, "SQLite");
+    Set($DatabaseUser, "rt_user");
+    Set($DatabasePassword, q{rt_pass});
+    Set($DatabaseName, q{rt4});
+    Set($DatabaseAdmin, "root");
+
+Set the server name to your domain, or you will get a lot of cross-site warnings.
+
+    Set($rtname, "your-domain.org");
+    Set($Organization, "your-domain.org");
+
+Set the web port to what you will run the debug server under.
+
+    Set($WebPort, 12345);
+
+If you want debug logging to file.
+
+    Set($LogToFile , 'debug');
+    Set($LogDir, 'log/');
+    Set($LogToFileNamed , "rt.log");
+
+Or, as an example, turn on SQL statment debugging and send log to STDERR
+
+    Set($StatementLog, 'debug');
+    Set($LogToSTDERR, 'debug');
+
+Then, init the DB
+
+    make initialize-database
+    # if it complains that it could not write the log, check if log/is created; if not
+    mkdir ~/opt/rt4/log
 
 During development, launch your local installation like so:
+
+    cd ~/opt/rt4
 
     cd var/mason_data
     rm -rf obj/*
