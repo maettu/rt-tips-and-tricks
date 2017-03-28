@@ -3,7 +3,8 @@ Hints for hacking on bestpractical.com's RT (Request Tracker)
 
 GENERAL NOTES
 -------------
-Go read the code.
+Questions during hacking: Go read the code.
+You may also try the documentation at https://docs.bestpractical.com/rt/4.4.1/index.html
 
 There is some documentation, e.g. for version 4.4.1, here https://docs.bestpractical.com/rt/4.4.1/index.html
 This gives an overview regarding available classes.
@@ -12,8 +13,6 @@ Then, locate the modules in question. You can do some print-style learning by pr
 
 LOCAL INSTALL
 -------------
-
-mojo command builder
 
 A local install with SQLite backend is easiest to set up.
 Use the sdbs tool to build rt in ~/opt/rt4
@@ -25,7 +24,7 @@ Use the sdbs tool to build rt in ~/opt/rt4
 At the end of the installation, you should see:
 
     ...
-    You must now configure RT by editing /home/bloch/gaga/etc/RT_SiteConfig.pm.
+    You must now configure RT by editing /home/your-home/rt4/etc/RT_SiteConfig.pm.
     ...
 
 If you have any specific setting, include them.
@@ -62,8 +61,9 @@ Or, as an example, turn on SQL statment debugging and send log to STDERR
 Then, init the DB
 
     make initialize-database
-    # if it complains that it could not write the log, check if log/is created; if not
+    # if it complains that it could not write the log, check if log/ is created; if not
     mkdir ~/opt/rt4/log
+    make initialize-database
 
 During development, launch your local installation like so:
 
