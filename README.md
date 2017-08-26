@@ -4,7 +4,6 @@ Hints for hacking on bestpractical.com's RT (Request Tracker)
 GENERAL NOTES
 -------------
 Questions during hacking: Go read the code.
-You may also try the documentation at https://docs.bestpractical.com/rt/4.4.1/index.html
 
 There is some documentation, e.g. for version 4.4.1, here https://docs.bestpractical.com/rt/4.4.1/index.html
 This gives an overview regarding available classes.
@@ -59,6 +58,7 @@ Or, as an example, turn on SQL statment debugging and send log to STDERR
     Set($LogToSTDERR, 'debug');
 
 Then, init the DB
+This is done from /home/your-user/opt/rt4/src/rt-4.4.1.
 
     make initialize-database
     # if it complains that it could not write the log, check if log/ is created; if not
